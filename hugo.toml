@@ -1,0 +1,48 @@
+baseURL = "https://mg-princess.github.io/tech-blog/"
+languageCode = "ko"
+title = "mg-princess"
+theme = "stack"
+defaultContentLanguage = "ko"
+
+[pagination]
+  pagerSize = 10
+
+[params]
+  mainSections = ["posts"]
+  featuredImageField = "image"
+  rssFullContent = true
+
+  [params.footer]
+    since = 2025
+
+  [params.dateFormat]
+    published = "2006-01-02"
+    lastUpdated = "2006-01-02 15:04"
+
+  [params.sidebar]
+    emoji = "🔐"
+    subtitle = "CTF / Wargame / Algorithm"
+    avatar = ""
+
+  [params.article]
+    math = false
+    toc = true
+    readingTime = true
+
+    [params.article.license]
+      enabled = false
+
+  [params.comments]
+    enabled = false
+    provider = ""
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+  series = "series"
+
+[markup]
+  [markup.highlight]
+    noClasses = false
+    lineNos = true
+    lineNumbersInTable = true
