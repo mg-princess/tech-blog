@@ -23,6 +23,11 @@ file ./chall
 checksec ./chall
 ```
 
+### 스크린샷
+
+<!-- 이미지는 이 폴더(index.md 옆)에 넣고 아래처럼 사용 -->
+<!-- ![설명](screenshot.png) -->
+
 ### 취약점
 
 ## 익스플로잇
