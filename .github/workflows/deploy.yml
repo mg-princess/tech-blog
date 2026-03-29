@@ -1,9 +1,14 @@
-name: Deploy Hugo to GitHub Pages
+name: Sync Notion & Deploy
 
 on:
+  # 매일 오전 9시 (KST) 자동 동기화
+  schedule:
+    - cron: '0 0 * * *'
+  # 수동 트리거 (GitHub Actions 탭에서 버튼 클릭)
+  workflow_dispatch:
+  # main 브랜치 push시에도 배포
   push:
     branches: [main]
-  workflow_dispatch:
 
 permissions:
   contents: read
@@ -15,36 +20,45 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  sync-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: recursive
-          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Sync from Notion
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: npm run sync
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: "latest"
+          hugo-version: 'latest'
           extended: true
 
-      - name: Build
+      - name: Build Hugo
         run: hugo --minify
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./public
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
